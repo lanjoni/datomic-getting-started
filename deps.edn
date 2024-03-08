@@ -1,0 +1,6 @@
+{:paths ["src" "resources"]
+ :deps 
+ {org.clojure/clojure {:mvn/version "1.11.1"}
+  com.datomic/peer {:mvn/version "1.0.7075"}
+  org.postgresql/postgresql {:mvn/version "42.2.19"}}
+ :aliases {:prod {:main-opts ["-m" "datoms.core"]}}}
