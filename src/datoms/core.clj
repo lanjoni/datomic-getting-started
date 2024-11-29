@@ -2,7 +2,10 @@
   (:require [datomic.api :as d]))
 
 ;; Define the `db-uri` to access the database
-(def db-uri "datomic:sql://?jdbc:postgresql://localhost:5432/datomic?user=yourusername&password=yourpassword")
+;; for postgres
+;; (def db-uri "datomic:sql://?jdbc:postgresql://localhost:5432/datomic?user=yourusername&password=yourpassword")
+
+(def db-uri "datomic:dev://localhost:4334/datoms")
 
 ;; Create the database
 (d/create-database db-uri)
@@ -60,34 +63,34 @@
 (def db (d/db conn))
 
 ;; Let's query all the movies
-(def all-movies-q '[:find ?e 
+(def all-movies-q '[:find ?e
                     :where [?e :movie/title]])
 
 (d/q all-movies-q db)
 
 ;; Let's query all the titles
-(def all-titles-q '[:find ?movie-title 
+(def all-titles-q '[:find ?movie-title
                     :where [_ :movie/title ?movie-title]])
 
 (d/q all-titles-q db)
 
 ;; Let's query all the titles from 1985
-(def titles-from-1985 '[:find ?title 
-                        :where [?e :movie/title ?title] 
-                               [?e :movie/release-year 1985]])
+(def titles-from-1985 '[:find ?title
+                        :where [?e :movie/title ?title]
+                        [?e :movie/release-year 1985]])
 
 (d/q titles-from-1985 db)
 
 ;; Let's query the movie with the title "Commando"
-(d/q '[:find ?e 
-              :where [?e :movie/title "Commando"]] 
-            db)
+(d/q '[:find ?e
+       :where [?e :movie/title "Commando"]]
+     db)
 
 ;; Let's update the genre of the movie "Commando"
-(def commando-id 
-  (ffirst (d/q '[:find ?e 
-                 :where [?e :movie/title "Commando"]] 
-                db)))
+(def commando-id
+  (ffirst (d/q '[:find ?e
+                 :where [?e :movie/title "Commando"]]
+               db)))
 
 @(d/transact conn [{:db/id commando-id :movie/genre "future governor"}])
 
@@ -95,9 +98,9 @@
 (def all-data-from-1985
   '[:find ?e ?title ?genre ?year
     :where [?e :movie/title ?title]
-           [?e :movie/genre ?genre]
-           [?e :movie/release-year ?year]
-           [(= ?year 1985)]])
+    [?e :movie/genre ?genre]
+    [?e :movie/release-year ?year]
+    [(= ?year 1985)]])
 
 (d/q all-data-from-1985 db)
 
@@ -106,9 +109,8 @@
 ;; they will always return the same results." 
 
 ;; Rerun this in your REPL:
-(comment 
-  (def db (d/db conn))
-  )
+(comment
+  (def db (d/db conn)))
 
 (d/q all-data-from-1985 db) ;; Now the value is updated!
                             ;; It's similar to a snapshot
@@ -121,10 +123,10 @@
 ;; Let's see the history
 (def hdb (d/history db))
 
-(d/q '[:find ?genre 
+(d/q '[:find ?genre
        :where [?e :movie/title "Commando"]
-              [?e :movie/genre ?genre]] 
-      hdb)
+       [?e :movie/genre ?genre]]
+     hdb)
 
 ;; To see more about historic data, check the Datomic documentation:
 ;; https://docs.datomic.com/pro/getting-started/see-historic-data.html

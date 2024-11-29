@@ -1,6 +1,7 @@
 {:paths ["src" "resources"]
- :deps 
- {org.clojure/clojure {:mvn/version "1.11.1"}
-  com.datomic/peer {:mvn/version "1.0.7075"}
-  org.postgresql/postgresql {:mvn/version "42.2.19"}}
- :aliases {:prod {:main-opts ["-m" "datoms.core"]}}}
+ :deps {org.clojure/clojure {:mvn/version "1.11.1"}
+        ;; if you're using postgres for the storage
+        org.postgresql/postgresql {:mvn/version "42.2.19"}
+        ;; if you're using dynamodb for the storage
+        com.amazonaws/aws-java-sdk-dynamodb {:mvn/version "1.12.701"}
+        com.datomic/peer {:mvn/version "1.0.7260"}}}

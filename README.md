@@ -8,16 +8,34 @@ This repository contains the source code generated from [Datomic's Getting Start
 You can download the zip running:
 
 ```
-curl https://datomic-pro-downloads.s3.amazonaws.com/1.0.7075/datomic-pro-1.0.7075.zip -O
+curl https://datomic-pro-downloads.s3.amazonaws.com/1.0.7260/datomic-pro-1.0.7260.zip -O
 ```
 
 After that, don't forget to unzip this zip inside your directory of preference. I'm using `~/datomic`, so:
 
 ```
-mkdir ~/datomic && unzip datomic-pro-1.0.7075.zip && mv ./datomic-pro-1.0.7075 ~/datomic/
+mkdir ~/datomic && unzip datomic-pro-1.0.7260.zip && mv ./datomic-pro-1.0.7260 ~/datomic/
 ```
 
-Well, now we need to configure our transactor! In this repository you will find the `resources` directory. First of all, configure your SQL database. I'm using PostgreSQL:
+Well, now we need to configure our transactor! In this repository you will find the `resources` directory that has properties for your transactor to run in memory, with JDBC database (PotgreSQL, MySQL, etc) or with DynamoDB.
+
+## Running a transactor in memory
+
+First of all, copy the `resources/datomic_properties` into `~/datomic/datomic-pro-1.0.7260`:
+
+```
+cp -r ./resources/datomic_properties ~/datomic/datomic-pro-1.0.7260/
+```
+
+Then you can start your transactor with:
+
+```
+~/datomic/datomic-pro-1.0.7260/bin/transactor ~/datomic/datomic-pro-1.0.7260/datomic_properties/dev-transactor-template.properties
+```
+
+## Running a transactor with a SQL database
+
+First of all, configure your SQL database. I'm using PostgreSQL:
 
 ```
 ...
@@ -30,16 +48,16 @@ sql-password=yourpassword
 ...
 ```
 
-Copy the `resources/datomic_properties` into `~/datomic/datomic-pro-1.0.7075`:
+Copy the `resources/datomic_properties` into `~/datomic/datomic-pro-1.0.7260`:
 
 ```
-cp -r ./resources/datomic_properties ~/datomic/datomic-pro-1.0.7075/
+cp -r ./resources/datomic_properties ~/datomic/datomic-pro-1.0.7260/
 ```
 
 Then you can start your transactor with:
 
 ```
-~/datomic/datomic-pro-1.0.7075/bin/transactor ~/datomic/datomic-pro-1.0.7075/datomic_properties/sql-transactor-template.properties
+~/datomic/datomic-pro-1.0.7260/bin/transactor ~/datomic/datomic-pro-1.0.7260/datomic_properties/sql-transactor-template.properties
 ```
 
 ### If you got an error about a table which doesn't exists, just create it
